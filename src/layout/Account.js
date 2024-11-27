@@ -1,8 +1,18 @@
 import React, { useState } from "react";
 import InputForm from "../components/InputForm";
 import IconButton from "../components/IconButton";
+import {
+  registerUser,
+  checkUserExists,
+  loginUser,
+} from "../utils/serverRequest";
 
-function Account({ setLogged, setAccountWindow }) {
+function Account({
+  setLogged,
+  setActiveWindow, // Changed from setAccountWindow, setAdminWindow
+  setAdmin,
+  setEmail,
+}) {
   const [formData, setFormData] = useState({
     Username: "",
     Password: "",
@@ -16,36 +26,56 @@ function Account({ setLogged, setAccountWindow }) {
     const { name, value } = event.target;
     const newErrors = { ...errors, [name]: "" }; // Clear errors when user types
 
-    if (value.length < 41) {
+    if (value.length <= 40) {
+      // Fixed maximum character validation
       const filteredValue = value.replace(/[^a-zA-Z0-9@.]/g, ""); // Allow @ and . for emails
-      let newFormData = { ...formData, [name]: filteredValue };
-      setFormData(newFormData);
+      setFormData({ ...formData, [name]: filteredValue });
     } else {
-      newErrors[name] = "Maximum 20 characters allowed";
+      newErrors[name] = "Maximum 40 characters allowed"; // Corrected error message
     }
     setErrors(newErrors);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
     let valid = true;
     const newErrors = { ...errors };
 
+    // Validation for username as email
     if (!formData.Username.includes("@")) {
       newErrors.Username = "Invalid email format";
       valid = false;
     }
+    // Validation for password length
     if (formData.Password.length < 6) {
       newErrors.Password = "Password must be at least 6 characters";
       valid = false;
     }
-    setErrors(newErrors);
 
     if (valid) {
-      setLogged(true);
-      setAccountWindow(false);
+      const response1 = await checkUserExists(formData.Username);
+      let response2;
+      if (response1.exists) {
+        response2 = await loginUser(formData.Username, formData.Password);
+      } else {
+        response2 = await registerUser(formData.Username, formData.Password);
+        response2 = await loginUser(formData.Username, formData.Password);
+      }
+
+      if (response2.token) {
+        setLogged(true);
+        setEmail(formData.Username);
+        setActiveWindow(""); // Close the account window upon successful login
+        setAdmin(response2.admin);
+        setErrors({ Username: "", Password: "" }); // Clear errors
+        setFormData({ Username: "", Password: "" }); // Clear form data
+      } else {
+        // Handle errors from response
+        newErrors.Password = "Invalid credentials";
+        newErrors.Username = "Invalid credentials";
+      }
     }
+    setErrors(newErrors);
   };
 
   return (
@@ -73,14 +103,12 @@ function Account({ setLogged, setAccountWindow }) {
           <div style={{ color: "red" }}>{errors.Password}</div>
         )}
         <div style={{ height: 10 }} />
-        <div className="flexRow">
-          <IconButton
-            type="submit"
-            name="Login"
-            styleClass="encryptedAddButton"
-            size={48}
-          />
-        </div>
+        <IconButton
+          type="submit"
+          name="Login"
+          styleClass="encryptedAddButton"
+          size={48}
+        />
       </form>
     </div>
   );

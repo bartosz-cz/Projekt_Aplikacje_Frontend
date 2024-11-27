@@ -22,6 +22,11 @@ html,
   background-color: var(--white);
 }
 
+.keyHolder {
+  justify-content: top;
+  align-items: center;
+}
+
 .input {
   border-color: black;
   outline: none;
@@ -35,6 +40,8 @@ html,
   margin-left: 16px;
   padding-left: 10px;
   padding-right: 10px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
 .input::placeholder {
@@ -75,9 +82,17 @@ html,
   transform: scale(1.2);
 }
 
-.loginWindow {
+.accountWindow {
   border-radius: 16px;
   background-color: var(--dark);
+  height: fit-content;
+  width: fit-content;
+  padding: 20px;
+}
+
+.usersWindow {
+  border-radius: 16px;
+  background-color: var(--white);
   height: fit-content;
   width: fit-content;
   padding: 20px;
@@ -109,7 +124,8 @@ html,
 }
 
 .lockButton:hover,
-.keyAddButton:hover {
+.keyAddButton:hover,
+.shareButton:hover {
   background-color: var(--medium);
   color: black;
 }
@@ -124,12 +140,26 @@ html,
   margin: 0 5px 0 5px;
 }
 
+.shareButton {
+  background-color: var(--white);
+  color: black;
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 5px 0 5px;
+}
+
 svg {
   display: flex;
 }
 
 .loginButton {
   color: var(--white);
+}
+
+.manageButton {
+  color: #000000;
 }
 
 .loginButton:hover {
@@ -161,7 +191,7 @@ svg {
 .menu {
   width: fit-content;
   height: fit-content;
-  align-items: center;
+  align-items: top;
   justify-content: center;
   margin-top: 10px;
   margin-left: 00px;
@@ -183,6 +213,12 @@ svg {
   font-family: "Century Gothic";
   padding: 10px;
   transition: background-color 0.2s ease;
+}
+
+.text {
+  font-size: 25px;
+  font-weight: 800;
+  font-family: "Century Gothic";
 }
 
 .buttonTextUp {
@@ -225,6 +261,12 @@ textarea {
 
 .center {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  display: flex;
   justify-content: start;
   align-items: center;
 }
@@ -247,4 +289,34 @@ textarea {
 .contentSize {
   width: fit-content;
   height: fit-content;
+}
+
+select {
+  border-color: black;
+  outline: none;
+  background-color: transparent;
+  border-radius: 16px;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 47px;
+  font-size: 15px;
+  font-weight: 800;
+  padding-left: 10px;
+  padding-right: 10px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-sizing: border-box;
+  color: "#555350";
+  border-width: 2px;
+}
+
+select:focus {
+  border-color: var(--medium); /* Highlight the border on focus */
+  border-width: 3px; /* Make the border thicker when the element is focused */
+}
+
+/* Style for options inside the select, can only be indirectly styled */
+select option {
+  background-color: var(--white); /* White background for options */
+  color: var(--dark); /* Dark text for readability */
 }

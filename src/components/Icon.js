@@ -13,7 +13,13 @@ import { ReactComponent as Check } from "../icons/Check.svg";
 import { ReactComponent as Register } from "../icons/Register.svg";
 import { ReactComponent as Password } from "../icons/Password.svg";
 import { ReactComponent as Username } from "../icons/Username.svg";
-
+import { ReactComponent as Logout } from "../icons/Logout.svg";
+import { ReactComponent as Admin } from "../icons/Admin.svg";
+import { ReactComponent as Manage } from "../icons/Manage.svg";
+import { ReactComponent as ArrowBack } from "../icons/ArrowBack.svg";
+import { ReactComponent as RemoveUser } from "../icons/RemoveUser.svg";
+import { ReactComponent as Share } from "../icons/Share.svg";
+import { ReactComponent as Unshare } from "../icons/Unshare.svg";
 const Icon = ({ name, size = 48 }) => {
   const IconComponent = {
     Account: Account,
@@ -31,6 +37,13 @@ const Icon = ({ name, size = 48 }) => {
     Register: Register,
     Username: Username,
     Password: Password,
+    Logout: Logout,
+    Admin: Admin,
+    Manage: Manage,
+    ArrowBack: ArrowBack,
+    RemoveUser: RemoveUser,
+    Share: Share,
+    Unshare: Unshare,
   }[name];
 
   if (!IconComponent) return null;

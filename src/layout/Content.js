@@ -2,15 +2,35 @@ import React, { useState, useEffect } from "react";
 import IconButton from "../components/IconButton";
 import Menu from "./Menu";
 import Account from "./Account";
+import Admin from "./Admin";
+import Share from "./Share";
 
 var classnames = require("classnames");
 
-function Content({ accountWindow, setLogged, setAccountWindow }) {
+function Content({
+  setLogged,
+  logged,
+  activeWindow,
+  setActiveWindow,
+  setAdmin,
+  setEmail,
+  email,
+  admin,
+}) {
   const [inputText, setInputText] = useState("");
   const [usedKeys, setKeysUsed] = useState([]);
   const [encrypted, setEncrypted] = useState(false);
   const [copyIcon, setCopyIcon] = useState("Copy");
+
   const textAreaDisabled = usedKeys[0] !== "?" && encrypted;
+
+  useEffect(() => {
+    if (!logged) {
+      setInputText("");
+      setKeysUsed([]);
+      setActiveWindow(""); // Reset active window on logout
+    }
+  }, [logged]);
 
   const handleChange = (input) => {
     const filtered = input.replace(/[^a-z A-Z]/g, "").toUpperCase();
@@ -40,10 +60,16 @@ function Content({ accountWindow, setLogged, setAccountWindow }) {
     }
   };
 
+  const setActive = (windowName) => {
+    setActiveWindow(windowName); // Set the active window
+  };
+
   return (
-    <div className="flexColumn center content">
+    <div className="flexColumn content content">
       <div
-        className={classnames("flexColumn", "center", { hide: accountWindow })}
+        className={classnames("flexColumn", "content", {
+          hide: activeWindow !== "",
+        })}
       >
         <div className="textAreaContainer flexRow">
           <textarea
@@ -74,12 +100,35 @@ function Content({ accountWindow, setLogged, setAccountWindow }) {
           setKeysUsed={setKeysUsed}
           encrypted={encrypted}
           setEncrypted={setEncrypted}
+          logged={logged}
+          setActive={setActive} // Allow Menu to set active window
         />
       </div>
       <div
-        className={classnames("flexColumn", "center", { hide: !accountWindow })}
+        className={classnames("flexColumn", "content", {
+          hide: activeWindow !== "account",
+        })}
       >
-        <Account setLogged={setLogged} setAccountWindow={setAccountWindow} />
+        <Account
+          setLogged={setLogged}
+          setActiveWindow={setActive}
+          setAdmin={setAdmin}
+          setEmail={setEmail}
+        />
+      </div>
+      <div
+        className={classnames("flexColumn", "content", {
+          hide: activeWindow !== "admin",
+        })}
+      >
+        <Admin email={email} logged={logged} admin={admin} />
+      </div>
+      <div
+        className={classnames("flexColumn", "content", {
+          hide: activeWindow !== "share",
+        })}
+      >
+        <Share email={email} logged={logged} activeWindow={activeWindow} />
       </div>
     </div>
   );

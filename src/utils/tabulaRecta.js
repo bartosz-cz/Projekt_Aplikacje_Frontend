@@ -13,3 +13,15 @@ export default function tabulaRectaGen() {
 
   return { tabulaRecta, shifts };
 }
+export function generateTabulaRectaFromShifts(shifts) {
+  const tabulaRecta = {};
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  for (const letter in shifts) {
+    const shift = shifts[letter];
+    const shiftedAlphabet = alphabet.slice(shift) + alphabet.slice(0, shift);
+    tabulaRecta[letter] = shiftedAlphabet;
+  }
+
+  return tabulaRecta;
+}

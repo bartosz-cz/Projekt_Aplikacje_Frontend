@@ -3,7 +3,10 @@ import IconButton from "../components/IconButton";
 import cipher from "../utils/cipher";
 import decipher from "../utils/decipher";
 import keywordGen from "../utils/keyword";
-import tabulaRectaGen from "../utils/tabulaRecta";
+import tabulaRectaGen, {
+  generateTabulaRectaFromShifts,
+} from "../utils/tabulaRecta";
+import { getCiphers, createCipher, deleteCipher } from "../utils/serverRequest";
 
 function Menu({
   setInputText,
@@ -12,12 +15,42 @@ function Menu({
   setKeysUsed,
   encrypted,
   setEncrypted,
+  logged,
 }) {
   const [ciphers, setCiphers] = useState({});
   const [selectedCiphers, setSelectedCiphers] = useState({});
   const [buttonTextHigh, setButtonTextHigh] = useState({});
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   let Ciphers = [];
+  useEffect(() => {
+    if (logged) {
+      const fetchCiphers = async () => {
+        const data = await getCiphers();
+        console.log(data);
+        let newCiphers = {};
+        for (let cipher of data) {
+          const shifts = JSON.parse(cipher.Vigenere_Table_Shifts);
+          const tabulaRecta = generateTabulaRectaFromShifts(shifts);
+          newCiphers = {
+            ...newCiphers,
+            [cipher.Name]: {
+              key: cipher.Password_Word,
+              tabula: tabulaRecta,
+              shifts: shifts,
+            },
+          };
+        }
+        setCiphers(newCiphers);
+      };
+      fetchCiphers().catch(console.error);
+    } else {
+      setCiphers({});
+      setSelectedCiphers({});
+      setButtonTextHigh({});
+      setIsDeleteMode(false);
+      setEncrypted(false);
+    }
+  }, [logged]);
 
   const handleNewCipher = () => {
     const randomKeyword = keywordGen(8);
@@ -27,6 +60,7 @@ function Menu({
       ...ciphers,
       [name]: { key: randomKeyword, tabula: tabulaRecta, shifts: shifts },
     });
+    if (logged) createCipher(JSON.stringify(shifts), randomKeyword, name);
   };
   const handleDeleteCipher = () => {
     setIsDeleteMode(!isDeleteMode);
@@ -56,7 +90,7 @@ function Menu({
         });
       }
     } else {
-      deleteCipher(name, ciphers, setCiphers, setIsDeleteMode);
+      deleteCipherfn(name, ciphers, setCiphers, setIsDeleteMode, logged);
     }
   };
   const handleEncrypt = () => {
@@ -131,11 +165,12 @@ function Menu({
   );
 }
 
-function deleteCipher(name, ciphers, setCiphers, setIsDeleteMode) {
+function deleteCipherfn(name, ciphers, setCiphers, setIsDeleteMode, logged) {
   let newCiphers = ciphers;
   delete newCiphers[name];
   setCiphers({ ...newCiphers });
   if (Object.keys(newCiphers).length === 0) setIsDeleteMode(false);
+  if (logged) deleteCipher(name);
 }
 
 export default Menu;

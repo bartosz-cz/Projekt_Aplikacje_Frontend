@@ -1,19 +1,55 @@
 import IconButton from "../components/IconButton";
+import React from "react";
 
-function Header({ accountWindow, setAccountWindow, logged }) {
-  const HandleAccount = () => {
-    setAccountWindow(!accountWindow);
+function Header({
+  setActiveWindow,
+  activeWindow,
+  admin,
+  logged,
+  setLogged,
+  setAdmin,
+}) {
+  // Toggle window visibility or set specific window as active
+  const toggleWindow = (windowName) => {
+    if (activeWindow === windowName) {
+      setActiveWindow(""); // If already active, close it
+    } else {
+      setActiveWindow(windowName);
+    }
   };
 
-  const AccountIcon = logged ? "Account" : "Login";
+  const handleLogout = () => {
+    setLogged(false);
+    setAdmin(false);
+    setActiveWindow(""); // Close any active window on logout
+    localStorage.removeItem("token"); // Clear the token from local storage
+  };
+
+  // Decide which icon and handler to use based on logged in state
+  const accountIcon = logged ? "Logout" : "Login";
+  const accountHandler = logged ? handleLogout : () => toggleWindow("account");
 
   return (
     <div className="flexRow header" style={{ padding: 10 }}>
       <IconButton
-        name={AccountIcon}
+        name={accountIcon}
         styleClass="loginButton"
-        handler={HandleAccount}
+        handler={accountHandler}
       />
+      {logged && (
+        <IconButton
+          name="Share"
+          styleClass="loginButton"
+          handler={() => toggleWindow("share")}
+        />
+      )}
+      {admin && (
+        <IconButton
+          name="Admin"
+          styleClass="loginButton"
+          handler={() => toggleWindow("admin")}
+        />
+      )}
     </div>
   );
 }
