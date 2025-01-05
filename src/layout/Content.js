@@ -28,7 +28,7 @@ function Content({
     if (!logged) {
       setInputText("");
       setKeysUsed([]);
-      setActiveWindow(""); // Reset active window on logout
+      setActiveWindow("");
     }
   }, [logged]);
 
@@ -61,7 +61,7 @@ function Content({
   };
 
   const setActive = (windowName) => {
-    setActiveWindow(windowName); // Set the active window
+    setActiveWindow(windowName);
   };
 
   return (
@@ -101,7 +101,7 @@ function Content({
           encrypted={encrypted}
           setEncrypted={setEncrypted}
           logged={logged}
-          setActive={setActive} // Allow Menu to set active window
+          setActive={setActive}
         />
       </div>
       <div

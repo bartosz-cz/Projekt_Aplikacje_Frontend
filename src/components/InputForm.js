@@ -20,7 +20,7 @@ function InputForm({
     if (mirrorSpan.current && inputRef.current) {
       mirrorSpan.current.textContent = value || placeholder || " ";
       console.log(`Calculated width: ${mirrorSpan.current.offsetWidth}px`);
-      inputRef.current.style.width = `${mirrorSpan.current.offsetWidth + 26}px`; // Add 1px to ensure no overflow
+      inputRef.current.style.width = `${mirrorSpan.current.offsetWidth + 26}px`;
     }
   };
 

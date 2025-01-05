@@ -76,27 +76,6 @@ export async function createCipher(vigenereTableShifts, passwordWord, name) {
   return handleResponse(response);
 }
 
-// Update an Existing Cipher
-export async function updateCipher(
-  cipherId,
-  vigenereTableShifts,
-  passwordWord
-) {
-  const token = localStorage.getItem("token");
-  const response = await fetch(`${API_URL}/ciphers/${cipherId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      vigenere_table_shifts: vigenereTableShifts,
-      password_word: passwordWord,
-    }),
-  });
-  return handleResponse(response);
-}
-
 // Delete a Cipher
 export async function deleteCipher(name) {
   const token = localStorage.getItem("token");
@@ -212,6 +191,20 @@ export async function getLogs() {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+  return handleResponse(response);
+}
+
+// Update User Admin Status (Admin Only)
+export async function updateUserAdminStatus(userId, isAdmin) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${API_URL}/users/${userId}/admin`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ is_admin: isAdmin }),
   });
   return handleResponse(response);
 }

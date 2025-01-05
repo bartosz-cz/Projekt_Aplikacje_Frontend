@@ -150,6 +150,15 @@ html,
   margin: 5px 5px 0 5px;
 }
 
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 svg {
   display: flex;
 }
@@ -160,6 +169,10 @@ svg {
 
 .manageButton {
   color: #000000;
+}
+
+.manageButtonActive {
+  color: #ff8935;
 }
 
 .loginButton:hover {

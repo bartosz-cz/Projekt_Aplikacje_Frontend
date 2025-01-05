@@ -9,10 +9,9 @@ function Header({
   setLogged,
   setAdmin,
 }) {
-  // Toggle window visibility or set specific window as active
   const toggleWindow = (windowName) => {
     if (activeWindow === windowName) {
-      setActiveWindow(""); // If already active, close it
+      setActiveWindow("");
     } else {
       setActiveWindow(windowName);
     }
@@ -21,11 +20,10 @@ function Header({
   const handleLogout = () => {
     setLogged(false);
     setAdmin(false);
-    setActiveWindow(""); // Close any active window on logout
-    localStorage.removeItem("token"); // Clear the token from local storage
+    setActiveWindow("");
+    localStorage.removeItem("token");
   };
 
-  // Decide which icon and handler to use based on logged in state
   const accountIcon = logged ? "Logout" : "Login";
   const accountHandler = logged ? handleLogout : () => toggleWindow("account");
 

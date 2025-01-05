@@ -75,7 +75,7 @@ function Share({ email, logged, activeWindow }) {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setErrors({ ...errors, [name]: "" }); // Reset error message for the field
+    setErrors({ ...errors, [name]: "" });
 
     if (name === "Username") {
       if (value.length <= 40) {
@@ -91,7 +91,6 @@ function Share({ email, logged, activeWindow }) {
   const handleShare = async (event) => {
     event.preventDefault();
 
-    // Input validation
     let valid = true;
     const newErrors = { ...errors };
 

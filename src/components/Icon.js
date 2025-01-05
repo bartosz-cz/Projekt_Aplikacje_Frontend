@@ -20,6 +20,7 @@ import { ReactComponent as ArrowBack } from "../icons/ArrowBack.svg";
 import { ReactComponent as RemoveUser } from "../icons/RemoveUser.svg";
 import { ReactComponent as Share } from "../icons/Share.svg";
 import { ReactComponent as Unshare } from "../icons/Unshare.svg";
+import { ReactComponent as Info } from "../icons/Info.svg";
 const Icon = ({ name, size = 48 }) => {
   const IconComponent = {
     Account: Account,
@@ -44,6 +45,7 @@ const Icon = ({ name, size = 48 }) => {
     RemoveUser: RemoveUser,
     Share: Share,
     Unshare: Unshare,
+    Info: Info,
   }[name];
 
   if (!IconComponent) return null;
